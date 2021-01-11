@@ -27,7 +27,7 @@ get_scope(){
 }
 
 get_subs(){
-    subfinder -silent -dL scope.txt -timeout 5 -t 1000 -nW -nC -o subs.temp
+    subfinder -silent -dL scope.txt -timeout 3 -t 10000 -nW -nC -o subs.temp
     cat subs.temp | sort -u | tac > subs.txt
     rm -rf subs.temp
 }
@@ -35,9 +35,9 @@ get_subs(){
 cleanup(){
     if [[ $# -eq 1 ]]
     then
-        zip -r open_programs.zip scope.txt && rm -rf scope.txt
+        zip -r open_programs_with_subdomains.zip scope.txt subs.txt && rm -rf scope.txt subs.txt
     else
-        zip -r open_programs_with_subdomains.zip scope.txt subs.txt && rm rf scope.txt subs.txt
+        zip -r open_programs.zip scope.txt && rm -rf scope.txt
     fi 
 }
 
@@ -46,14 +46,16 @@ main(){
     if [[ ! -f scope.txt ]]
     then
         get_scope
+        echo "$(wc -l scope.txt) Domains dumped"
     fi
 
     if [[ $# -eq 1 && ! -f subs.txt  ]]
     then 
         get_subs
+        echo "$(wc -l scope.txt) Domains dumped"
+        echo "$(wc -l subs.txt) Subdomains dumped"
     fi
 
-    echo "$(wc -l subs.txt) Subdomains dumped"
 }
 
 if [[ $# -eq 1 ]]
