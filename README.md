@@ -10,7 +10,7 @@ This script dumps domains that are up for bug bounty from
 
 # Usage
 * `./dump_programs.sh` to dump all publicly open bug bounty domains.
-* `./dump_programs.sh` to dump domains and their subdomains (Takes time).
+* `./dump_programs.sh s` to dump domains and their subdomains (Takes time).
 
 
 # Prequisites
