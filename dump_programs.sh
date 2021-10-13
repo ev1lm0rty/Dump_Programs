@@ -2,13 +2,13 @@
 
 get_scope(){
 
-    curl -sL https://github.com/projectdiscovery/public-bugbounty-programs/raw/master/chaos-bugbounty-list.json | jq -r '.programs[].domains | to_entries | .[].value' >> bbt.txt
+    #curl -sL https://github.com/projectdiscovery/public-bugbounty-programs/raw/master/chaos-bugbounty-list.json | jq -r '.programs[].domains | to_entries | .[].value' >> bbt.txt
     curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/intigriti_data.json | jq -r '.[].targets.in_scope[] | select(.type=="url") |  [.endpoint] |@tsv' >> bbt.txt
     curl -sL https://github.com/arkadiyt/bounty-targets-data/blob/master/data/hackerone_data.json?raw=true | jq -r '.[].targets.in_scope[] | select(.asset_type=="URL") | [.asset_identifier] | @tsv' >> bbt.txt
     curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/bugcrowd_data.json | jq -r '.[].targets.in_scope[] | select(.type=="website testing") | [.target] | @tsv' >> bbt.txt
     curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/yeswehack_data.json | jq -r '.[].targets.in_scope[] | select(.type=="web-application")| [.target]| @tsv' >> bbt.txt
-    curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/hackenproof_data.json | jq -r '.[].targets.in_scope[]| select(.type=="Web")| [.target] | @tsv' >> bbt.txt
-    curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/federacy_data.json | jq -r '.[].targets.in_scope[] | select(.type=="website") | [.target] | @tsv' >> bbt.txt
+    #curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/hackenproof_data.json | jq -r '.[].targets.in_scope[]| select(.type=="Web")| [.target] | @tsv' >> bbt.txt
+    #curl -sL https://github.com/arkadiyt/bounty-targets-data/raw/master/data/federacy_data.json | jq -r '.[].targets.in_scope[] | select(.type=="website") | [.target] | @tsv' >> bbt.txt
 
     cat bbt.txt | tr ',' '\n' > new.txt
     sort -u new.txt -o bbt.txt
@@ -21,9 +21,8 @@ get_scope(){
     s/\/.*$// ;
     / /d 
     ' bbt.txt
-    cat bbt.txt | tr -d '(' | tr -d ')' | tr -d '*' | sed '/\[/d ; s/^\.//' | sort | uniq > scope.txt
+    cat bbt.txt | tr -d '(' | tr -d ')' | tr -d '*' | sed '/\[/d ; s/^\.//' | sort -u > scope.txt
     rm -rf scope.temp bbt.txt
-    
 }
 
 get_subs(){
@@ -61,8 +60,8 @@ main(){
 if [[ $# -eq 1 ]]
 then
     main $1
-    cleanup $1
+    #cleanup $1
 else
     main
-    cleanup
+    #cleanup
 fi
